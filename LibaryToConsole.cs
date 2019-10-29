@@ -34,6 +34,8 @@ namespace library
                 Console.WriteLine("Title: {0}" , BookInInventory.Title);
                 Console.WriteLine("Author: {0}" , BookInInventory.Author);
                 Console.WriteLine("Release year: {0}" , BookInInventory.ReleaseYear);
+                Console.WriteLine("Extra: {0}", BookInInventory);
+
                 Console.WriteLine(); 
             }
         }

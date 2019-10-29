@@ -1,22 +1,23 @@
 ﻿using System;
 using menu;
 using library;
-using System.Collections.Generic;
-
 namespace biblotikarien
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Book book = new Book("Fången", "Jk", 2006);
-
+            // 5 random books added
             Library.AddBook("Room on the Broom", "Julia Donaldson", 2003);
             Library.AddBook("Permanent Record", "Edward Snowden", 2019);
             Library.AddBook("Guts", "Raina Telgemeier", 2019);
             Library.AddBook("Strange Planet", "Nathan W.Pyle", 2019);
             Library.AddBook("The Beautiful Ones", "Prince", 2019);
+            // Will be added as Ordinary Book
 
+            Book myBook = new Novel("Strange Planet", "Nathan W.Pyle", 2019);
+            // Will be added as a Novel
+            Library.AddBook(myBook);
 
             string header = "Choose one of the following options:";
             string[] menuContent = new string[] { "Add book", "Search for a book", "List the inventory" };
@@ -32,16 +33,21 @@ namespace biblotikarien
                     case 0:
                         // Lägg till böcker
                         AddBook();
-
                         break;
 
                     case 1:
                         // Sök efter en bok
                         Console.WriteLine();
                         Console.WriteLine("What do you want to search for? ");
-                        string SearchVariable = Console.ReadLine();
-                        LibraryToConsole.SearchBook(SearchVariable);
+                        try
+                        {
+                            string SearchVariable = Console.ReadLine();
+                            LibraryToConsole.SearchBook(SearchVariable);
+                        }
+                        catch
+                        {
 
+                        }
                         break;
 
                     case 2:
@@ -50,7 +56,6 @@ namespace biblotikarien
                         break;
                 }
             }
-
         }
         private static void AddBook()
         {
@@ -65,7 +70,8 @@ namespace biblotikarien
 
             do
             {
-                menu = menu.GetMenu(menu, header, bookContent);
+                menu = menu.GetMenu(menu, header, bookContent); 
+                // Changed the menu class a bit so it fits this implementation 
                 switch (menu.SelectedIndex)
                 {
                     case 0:
@@ -117,7 +123,5 @@ namespace biblotikarien
             }
             return true;
         }
-
-
     }
 }
