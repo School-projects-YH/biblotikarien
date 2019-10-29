@@ -54,6 +54,43 @@ public class Menu
             }
             return menu;
         }
+        public Menu GetMenu(Menu menu, string header, string[] Content)
+        {
+            var menuPainter = new ConsoleMenuPainter(menu);        // Skapar meny med hjälp av klassen
+
+            Console.Clear();                                        // Så att consolen alltid ser likadan ut
+
+            Console.WriteLine(header);                              // Skriv ut header
+
+            for (int i = 0; i <= header.Length; i++)
+            {
+                Console.Write('-');
+            }
+
+            bool done = false;
+
+            while (!done)
+            {
+                menuPainter.Paint(Content);                                // Skriver ut menyn
+                var keyInfo = Console.ReadKey();                    // Läser av tangentnedtryckning
+
+                switch (keyInfo.Key)
+                {                                                    // Switch argument för de olika tangenterna
+                    case ConsoleKey.UpArrow:
+                        menu.MoveUp();
+                        break;
+                    case ConsoleKey.DownArrow:
+                        menu.MoveDown();
+                        break;
+                    // Om enter har tryckts gå ur meny loopen
+                    case ConsoleKey.Enter:
+                        done = true;
+                        break;
+                }
+            }
+            return menu;
+        }
+
 
     }
     public class ConsoleMenuPainter
@@ -82,6 +119,28 @@ public class Menu
 
                 Console.SetCursorPosition(1, 3 + i);
                 Console.WriteLine (menu.Items[i]);
+            }
+        }
+        public void Paint(string[] Content)
+        {
+            for (int i = 0; i < menu.Items.Count; i++){
+
+                var color = menu.SelectedIndex == i ? ConsoleColor.Yellow : ConsoleColor.Gray;
+                Console.ForegroundColor = color;
+                Console.SetCursorPosition(0, 3 + i);
+
+                if (i == menu.SelectedIndex)
+                {
+                    Console.Write('>');            
+                }
+                else
+                {
+                    Console.Write(' ');
+                }
+
+                Console.SetCursorPosition(1, 3 + i);
+                Console.WriteLine ("{0}: {1}", menu.Items[i], Content[i]);
+
             }
         }
     }
