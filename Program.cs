@@ -9,15 +9,25 @@ namespace biblotikarien
         {
             // 5 random books added
             Library.AddBook("Room on the Broom", "Julia Donaldson", 2003);
-            Library.AddBook("Permanent Record", "Edward Snowden", 2019);
-            Library.AddBook("Guts", "Raina Telgemeier", 2019);
-            Library.AddBook("Strange Planet", "Nathan W.Pyle", 2019);
-            Library.AddBook("The Beautiful Ones", "Prince", 2019);
             // Will be added as Ordinary Book
 
-            Book myBook = new Novel("Strange Planet", "Nathan W.Pyle", 2019);
+            Book myBook = new ShortStory("Permanent Record", "Edward Snowden", 2019);
+            // Will be added as a Short story
+
+            Book myBook1 = new Biography("The Beautiful Ones", "Prince", 2019);
+            // Will be added as a Biography
+
+            Book myBook2 = new Novel("Strange Planet", "Nathan W.Pyle", 2019);
             // Will be added as a Novel
+
+            Book myBook3 = new Periodical("Guts", "Raina Telgemeier", 2019);
+            // Will be added as a Periodical
+
             Library.AddBook(myBook);
+            Library.AddBook(myBook1);
+            Library.AddBook(myBook2);
+            Library.AddBook(myBook3);
+
 
             string header = "Choose one of the following options:";
             string[] menuContent = new string[] { "Add book", "Search for a book", "List the inventory" };
@@ -26,8 +36,10 @@ namespace biblotikarien
 
             while (true)
             {
-                menu = menu.GetMenu(menu, header);
                 Console.ResetColor();
+                
+                menu = menu.GetMenu(menu, header);
+
                 switch (menu.SelectedIndex)
                 {
                     case 0:
@@ -44,14 +56,12 @@ namespace biblotikarien
                             string SearchVariable = Console.ReadLine();
                             LibraryToConsole.SearchBook(SearchVariable);
                         }
-                        catch
-                        {
-
-                        }
+                        catch {} // Returns to main if error occur
                         break;
 
                     case 2:
                         // Inventarie
+                        Console.ResetColor();
                         LibraryToConsole.PrintBookInventory();
                         break;
                 }
@@ -60,7 +70,7 @@ namespace biblotikarien
         private static void AddBook()
         {
             string header = "Add book";
-            string[] menuContent = new string[] { "Title", "Author", "Release year" };
+            string[] menuContent = new string[] { "Title", "Author", "Release year", "Exit" };
             string[] bookContent = new string[] { "", "", "" };
             Menu menu = new Menu(menuContent);
             string Title = "";
@@ -79,14 +89,14 @@ namespace biblotikarien
                         Console.SetCursorPosition(8, 3);
                         Title = Console.ReadLine();
                         bookContent[0] = Title;
-                        break;
+                    break;
 
                     case 1:
                         // Author
                         Console.SetCursorPosition(9, 4);
                         Author = Console.ReadLine();
                         bookContent[1] = Author;
-                        break;
+                    break;
 
                     case 2:
                         // ReleaseYear
@@ -99,11 +109,16 @@ namespace biblotikarien
                         }
                         catch (FormatException)
                         {
-                            Console.WriteLine("Please only enter numbers!");
-                            Console.ReadKey();
                             bookContent[2] = "";
+                            Console.SetCursorPosition(0, 7);
+                            Console.WriteLine("Please, only enter numbers!");
+                            Console.ReadKey();
                         }
-                        break;
+                    break;
+                    
+                    case 3:
+                        
+                    return;
                 }
                 Console.ResetColor();
             } while (!IsListFilled(bookContent));

@@ -144,5 +144,4 @@ namespace library
             BookType = "Biography";
         }
     }
-
 }

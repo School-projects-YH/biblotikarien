@@ -13,13 +13,12 @@ public class Menu
         public IReadOnlyList<string> Items {get;}
         public int SelectedIndex {get; private set;} = 0; // Utgångspunkt med inget markerat
         public string SelectedOption => SelectedIndex != - 1 ? Items[SelectedIndex] : null;
-
-
         public void MoveUp() => SelectedIndex = Math.Max(SelectedIndex - 1, 0);      // Rör dig ett steg uppåt om du inte är på högsta nivån
         public void MoveDown() => SelectedIndex = Math.Min(SelectedIndex + 1, Items.Count - 1); // Rör dig ett steg neråt om du inte är på lägsta nivån
 
         public Menu GetMenu(Menu menu, string header)
         {
+            Console.CursorVisible = false;
             var menuPainter = new ConsoleMenuPainter(menu);        // Skapar meny med hjälp av klassen
 
             Console.Clear();                                        // Så att consolen alltid ser likadan ut
@@ -52,10 +51,12 @@ public class Menu
                         break;
                 }
             }
+            Console.CursorVisible = true;
             return menu;
         }
         public Menu GetMenu(Menu menu, string header, string[] Content)
         {
+            Console.CursorVisible = false;
             var menuPainter = new ConsoleMenuPainter(menu);        // Skapar meny med hjälp av klassen
 
             Console.Clear();                                        // Så att consolen alltid ser likadan ut
@@ -88,10 +89,10 @@ public class Menu
                         break;
                 }
             }
+            Console.CursorVisible = true;
+
             return menu;
         }
-
-
     }
     public class ConsoleMenuPainter
     {
@@ -106,7 +107,8 @@ public class Menu
 
                 var color = menu.SelectedIndex == i ? ConsoleColor.Yellow : ConsoleColor.Gray;
                 Console.ForegroundColor = color;
-                Console.SetCursorPosition(0, 3 + i);
+                int offset = 2+i;
+                Console.SetCursorPosition(0, offset);
 
                 if (i == menu.SelectedIndex)
                 {
@@ -117,7 +119,7 @@ public class Menu
                     Console.Write(' ');
                 }
 
-                Console.SetCursorPosition(1, 3 + i);
+                Console.SetCursorPosition(1, offset);
                 Console.WriteLine (menu.Items[i]);
             }
         }
@@ -127,7 +129,8 @@ public class Menu
 
                 var color = menu.SelectedIndex == i ? ConsoleColor.Yellow : ConsoleColor.Gray;
                 Console.ForegroundColor = color;
-                Console.SetCursorPosition(0, 3 + i);
+                int offset = 2 + i;
+                Console.SetCursorPosition(0, offset);
 
                 if (i == menu.SelectedIndex)
                 {
@@ -138,9 +141,15 @@ public class Menu
                     Console.Write(' ');
                 }
 
-                Console.SetCursorPosition(1, 3 + i);
-                Console.WriteLine ("{0}: {1}", menu.Items[i], Content[i]);
-
+                Console.SetCursorPosition(1, offset);
+                if (i < Content.Count())
+                {
+                    Console.WriteLine ("{0}: {1}", menu.Items[i], Content[i]);
+                }
+                else
+                {
+                    Console.WriteLine ("{0}", menu.Items[i]);
+                }
             }
         }
     }
